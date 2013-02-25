@@ -1,2 +1,6 @@
-
+target/
+.settings/
+.classpath
+.project
+.forge_settings
 .DS_Store
