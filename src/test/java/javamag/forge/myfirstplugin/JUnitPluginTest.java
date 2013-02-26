@@ -1,12 +1,18 @@
 package javamag.forge.myfirstplugin;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.forge.test.AbstractShellTest;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.junit.After;
 import org.junit.Test;
 
 public class JUnitPluginTest extends AbstractShellTest
 {
+    
    @Deployment
    public static JavaArchive getDeployment()
    {
@@ -14,21 +20,16 @@ public class JUnitPluginTest extends AbstractShellTest
    }
 
    @Test
-   public void testDefaultCommand() throws Exception
+   public void testSetup() throws Exception
    {
-      getShell().execute("jut");
+      queueInputLines("\n","\n");
+      getShell().execute("new-project --named test");  
+      getShell().execute("jut setup");
    }
-
-   @Test
-   public void testCommand() throws Exception
-   {
-      getShell().execute("jut command");
-   }
-
-   @Test
-   public void testPrompt() throws Exception
-   {
-      queueInputLines("y");
-      getShell().execute("jut prompt foo bar");
+   
+   @After
+   public void afterTest() throws IOException {
+       super.afterTest();
+       FileUtils.deleteDirectory(new File("test"));
    }
 }
